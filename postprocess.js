@@ -26,7 +26,7 @@ for (const country of COUNTRIES) {
     const data = await readJSONFromURL(
       `${API_URL}?country=${country}&start_date=${date}}`
     )
-    const newFilename = `./raw_data/${country}/${date}.json`
+    const newFilename = `raw_data/${country}/${date}.json`
 
     await writeJSON(newFilename, data[0])
   } catch (error) {
