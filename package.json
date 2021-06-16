@@ -1,0 +1,26 @@
+{
+  "name": "featured_today",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.2.6",
+    "clsx": "^1.1.1",
+    "dayjs": "^1.10.5",
+    "lodash": "^4.17.21",
+    "next": "11.0.0",
+    "postcss": "^8.3.4",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "tailwindcss": "^2.1.4"
+  },
+  "devDependencies": {
+    "eslint": "7.28.0",
+    "eslint-config-next": "11.0.0"
+  }
+}
