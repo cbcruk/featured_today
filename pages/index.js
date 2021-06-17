@@ -1,64 +1,60 @@
 import Head from 'next/head'
-import Grid from '../components/Grid'
+import { useRouter } from 'next/router'
+import Card from '../components/Card'
+import List from '../components/List'
+import Media from '../components/Media'
 import { getDisplayFormat } from '../lib/date'
-import { getThumbnail } from '../lib/image'
 
-export default function Home({ today, data }) {
+export default function Home({ data }) {
+  const router = useRouter()
+
+  if (!data) {
+    return null
+  }
+
   const { stories } = data
+  const today = getDisplayFormat('MM월 DD일 dddd', router.query.date)
 
   return (
     <div className="flex flex-wrap gap-2 max-w-sm p-4 m-auto">
       <Head>
         <title>투데이 - {today}</title>
       </Head>
-      {stories.map((story) => {
-        if (story.substyle === 'list') {
-          return (
-            <div
-              key={story.id}
-              className="overflow-hidden relative rounded-lg bg-gray-200"
-            >
-              <div className="py-8 px-5 font-bold">
-                <div className="text-md text-gray-600">{story.label}</div>
-                <div className="text-3xl">{story.title}</div>
-              </div>
-              <Grid items={story.apps} />
-            </div>
-          )
-        }
 
-        return (
-          <div key={story.id} className="overflow-hidden relative rounded-lg">
-            {story.artwork && (
-              <img
-                src={getThumbnail(story.artwork.url, '960x1266fn')}
-                alt=""
-                className="w-full overflow-hidden rounded-lg"
+      {stories.map((story) => {
+        switch (story.substyle) {
+          case 'app_of_day':
+          case 'game_of_day':
+            return <Card key={story.id} {...story} />
+          case 'list':
+          case 'grid':
+            return (
+              <List
+                key={story.id}
+                label={story.label}
+                title={story.title}
+                apps={story.apps}
               />
-            )}
-            {story.artwork && (
-              <div className="flex flex-col absolute top-0 left-0 w-full h-full pt-8 pb-6 px-5">
-                <div className="font-bold">
-                  <div className="text-md text-gray-300">{story.label}</div>
-                  <div className="text-3xl text-white">{story.title}</div>
-                </div>
-                <div className="mt-auto text-lg text-white">
-                  {story.short_description
-                    .replace('〈', '<')
-                    .replace('〉', '>')}
-                </div>
-              </div>
-            )}
-          </div>
-        )
+            )
+          default:
+            return (
+              <Media
+                key={story.id}
+                artwork={story.artwork}
+                video_preview_url={story.video_preview_url}
+                label={story.label}
+                title={story.title}
+                short_description={story.short_description}
+              />
+            )
+        }
       })}
     </div>
   )
 }
 
-export async function getStaticProps() {
-  const today = getDisplayFormat('MM월 DD일 dddd')
-  const date = getDisplayFormat('YYYY-MM-DD')
+export async function getServerSideProps(context) {
+  const date = context.query.date || 'data'
   const response = await fetch(
     `https://raw.githubusercontent.com/cbcruk/featured_today/main/raw_data/KR/${date}.json`
   )
@@ -67,7 +63,6 @@ export async function getStaticProps() {
   return {
     props: {
       data,
-      today,
     },
   }
 }
