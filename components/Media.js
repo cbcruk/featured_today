@@ -8,6 +8,7 @@ function Media({
   label,
   title,
   short_description,
+  url,
 }) {
   if (video_preview_url) {
     return (
@@ -21,7 +22,14 @@ function Media({
         )}
         <div className="flex flex-col p-4 bg-gray-700">
           <div className="text-sm text-gray-300">{label}</div>
-          <div className="text-2xl text-white font-bold">{title}</div>
+          <a
+            href={url}
+            target="_blank"
+            rel="noreferrer"
+            className="text-2xl text-white font-bold"
+          >
+            {title}
+          </a>
           <div className="mt-4 text-sm text-gray-400">
             {normalize(short_description)}
           </div>

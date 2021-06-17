@@ -2,7 +2,7 @@ import chroma from 'chroma-js'
 import { getThumbnail } from '../lib/image'
 import Box from './Box'
 
-function Card({ apps, label, artwork }) {
+function Card({ apps, label, artwork, url }) {
   return (
     <Box>
       <img src={getThumbnail(artwork.url, '960x1266fn')} alt="" />
@@ -17,7 +17,10 @@ function Card({ apps, label, artwork }) {
             {label}
           </span>
         </div>
-        <div
+        <a
+          href={url}
+          target="_blank"
+          rel="noreferrer"
           className="flex align-middle gap-3 p-4"
           style={{
             backdropFilter: 'blur(30px)',
@@ -35,7 +38,7 @@ function Card({ apps, label, artwork }) {
             <div className="text-sm">{apps[0].name}</div>
             <div className="text-xs">{apps[0].subtitle}</div>
           </div>
-        </div>
+        </a>
       </div>
     </Box>
   )

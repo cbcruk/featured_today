@@ -34,6 +34,7 @@ export default function Home({ data }) {
                 label={story.label}
                 title={story.title}
                 apps={story.apps}
+                url={story.url}
               />
             )
           default:
@@ -45,6 +46,7 @@ export default function Home({ data }) {
                 label={story.label}
                 title={story.title}
                 short_description={story.short_description}
+                url={story.url}
               />
             )
         }
