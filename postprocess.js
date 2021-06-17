@@ -24,8 +24,10 @@ for (const country of COUNTRIES) {
     )
     const data = await response.json()
     const newFilename = `./raw_data/${country}/${date}.json`
+    const newDataFilename = `./raw_data/${country}/data.json`
 
     await Deno.writeTextFile(newFilename, JSON.stringify(data[0]))
+    await Deno.writeTextFile(newDataFilename, JSON.stringify(data[0]))
   } catch (error) {
     console.error(error)
   }
