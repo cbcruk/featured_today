@@ -25,6 +25,7 @@ export default function Home({ data }) {
         switch (story.substyle) {
           case 'app_of_day':
           case 'game_of_day':
+          case 'editorial':
             return <Card key={story.id} {...story} />
           case 'list':
           case 'grid':
