@@ -2,6 +2,14 @@ import { getThumbnail } from '../lib/image'
 import { normalize } from '../lib/text'
 import Box from './Box'
 
+function Link({ url, className, children }) {
+  return (
+    <a href={url} target="_blank" rel="noreferrer" className={className}>
+      {children}
+    </a>
+  )
+}
+
 function Media({
   artwork,
   video_preview_url,
@@ -22,14 +30,9 @@ function Media({
         )}
         <div className="flex flex-col p-4 bg-gray-700">
           <div className="text-sm text-gray-300">{label}</div>
-          <a
-            href={url}
-            target="_blank"
-            rel="noreferrer"
-            className="text-2xl text-white font-bold"
-          >
+          <Link url={url} className="text-2xl text-white font-bold">
             {title}
-          </a>
+          </Link>
           <div className="mt-4 text-sm text-gray-400">
             {normalize(short_description)}
           </div>
@@ -50,7 +53,9 @@ function Media({
       <div className="flex flex-col absolute top-0 left-0 w-full h-full pt-8 pb-6 px-5">
         <div className="font-bold">
           <div className="text-md text-gray-300">{label}</div>
-          <div className="text-3xl text-white">{title}</div>
+          <Link url={url} className="text-3xl text-white">
+            {title}
+          </Link>
         </div>
         <div className="mt-auto text-lg text-white">
           {normalize(short_description)}
