@@ -4,14 +4,28 @@ const SIZE = '156px'
 
 function Grid({ items }) {
   return (
-    <div
-      className="overflow-hidden"
-      style={{
-        aspectRatio: `335.7 / 284`,
-      }}
-    >
+    <div className="aspect-ratio overflow-hidden">
+      <style jsx>
+        {`
+          .aspect-ratio {
+            position: relative;
+          }
+
+          .aspect-ratio::before {
+            float: left;
+            padding-top: calc(284 / 335.7 * 100%);
+            content: '';
+          }
+
+          .aspect-ratio::after {
+            display: block;
+            content: '';
+            clear: both;
+          }
+        `}
+      </style>
       <div
-        className="grid"
+        className="absolute grid"
         style={{
           gridTemplate: `'g21 g22 g23 g24 g25 g26' ${SIZE}
             'g20 g7 g8 g9 g10 g27' ${SIZE}
