@@ -9,6 +9,7 @@ function Grid({ items }) {
         {`
           .aspect-ratio {
             position: relative;
+            aspect-ratio: 352/297.78;
           }
 
           .aspect-ratio::before {
@@ -49,6 +50,7 @@ function Grid({ items }) {
               alt={item.name}
               width={156}
               height={156}
+              loading="lazy"
             />
           </div>
         ))}

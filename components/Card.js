@@ -5,7 +5,13 @@ import Box from './Box'
 function Card({ apps, label, artwork, url }) {
   return (
     <Box>
-      <img src={getThumbnail(artwork.url, '960x1266fn')} alt="" />
+      <img
+        src={getThumbnail(artwork.url, '960x1266fn')}
+        alt=""
+        width="960"
+        height="1266"
+        loading="lazy"
+      />
       <div className="absolute bottom-0 left-0 flex flex-col w-full h-full">
         <div className="p-4 mt-auto font-extrabold text-4xl whitespace-pre">
           <span
@@ -32,6 +38,7 @@ function Card({ apps, label, artwork, url }) {
             alt=""
             width={52}
             height={52}
+            loading="lazy"
             className="rounded-lg"
           />
           <div className="flex flex-col justify-center text-white">
