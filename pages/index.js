@@ -1,11 +1,12 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Card from '../components/Card'
+import DatePicker from '../components/Date'
 import List from '../components/List'
 import Media from '../components/Media'
 import { getDisplayFormat } from '../lib/date'
 
-export default function Home({ data }) {
+export default function Home({ data, date }) {
   const router = useRouter()
 
   if (!data) {
@@ -13,7 +14,7 @@ export default function Home({ data }) {
   }
 
   const { stories } = data
-  const today = getDisplayFormat('MM월 DD일 dddd', router.query.date)
+  const today = getDisplayFormat('MM월 DD일 dddd', date)
 
   return (
     <div className="max-w-sm p-4 m-auto">
@@ -22,11 +23,7 @@ export default function Home({ data }) {
       </Head>
       <header className="py-4 pt-0">
         <h1 className="relative text-sm text-gray-500">
-          <label htmlFor="date">{today}</label>
-          <input
-            id="date"
-            type="date"
-            className="absolute top-0 left-0 opacity-0"
+          <DatePicker
             onChange={(e) => {
               router.push({
                 query: {
@@ -34,7 +31,9 @@ export default function Home({ data }) {
                 },
               })
             }}
-          />
+          >
+            {today}
+          </DatePicker>
         </h1>
         <h2 className="text-2xl font-bold">투데이</h2>
       </header>
@@ -77,15 +76,26 @@ export default function Home({ data }) {
 }
 
 export async function getServerSideProps(context) {
-  const date = context.query.date || 'data'
+  const { date } = context.query
+  const target = date || 'data'
   const response = await fetch(
-    `https://raw.githubusercontent.com/cbcruk/featured_today/main/raw_data/KR/${date}.json`
+    `https://raw.githubusercontent.com/cbcruk/featured_today/main/raw_data/KR/${target}.json`
   )
+
+  if (response.status === 404) {
+    return {
+      props: {
+        data: null,
+      },
+    }
+  }
+
   const data = await response.json()
 
   return {
     props: {
       data,
+      date: date || data.date,
     },
   }
 }
