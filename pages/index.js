@@ -1,101 +1,27 @@
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-import Card from '../components/Card'
-import DatePicker from '../components/Date'
-import List from '../components/List'
-import Media from '../components/Media'
-import { getDisplayFormat } from '../lib/date'
+import Wrap from '../components/Wrap'
 
-export default function Home({ data, date }) {
-  const router = useRouter()
-
+function Home({ data, date }) {
   if (!data) {
     return null
   }
 
   const { stories } = data
-  const today = getDisplayFormat('MM월 DD일 dddd', date)
 
-  return (
-    <div className="max-w-sm p-4 m-auto">
-      <Head>
-        <title>투데이 - {today}</title>
-      </Head>
-      <header className="py-4 pt-0">
-        <h1 className="relative text-sm text-gray-500">
-          <DatePicker
-            onChange={(e) => {
-              router.push({
-                query: {
-                  date: e.target.value,
-                },
-              })
-            }}
-          >
-            {today}
-          </DatePicker>
-        </h1>
-        <h2 className="text-2xl font-bold">투데이</h2>
-      </header>
-      <div className="flex flex-wrap">
-        {stories.map((story) => {
-          switch (story.substyle) {
-            case 'app_of_day':
-            case 'game_of_day':
-            case 'editorial':
-              return <Card key={story.id} {...story} />
-            case 'list':
-            case 'grid':
-            case 'river':
-              return (
-                <List
-                  key={story.id}
-                  label={story.label}
-                  title={story.title}
-                  apps={story.apps}
-                  url={story.url}
-                />
-              )
-            default:
-              return (
-                <Media
-                  key={story.id}
-                  artwork={story.artwork}
-                  video_preview_url={story.video_preview_url}
-                  label={story.label}
-                  title={story.title}
-                  short_description={story.short_description}
-                  url={story.url}
-                />
-              )
-          }
-        })}
-      </div>
-    </div>
-  )
+  return <Wrap stories={stories} date={date} />
 }
 
-export async function getServerSideProps(context) {
-  const { date } = context.query
-  const target = date || 'data'
+export async function getStaticProps() {
   const response = await fetch(
-    `https://raw.githubusercontent.com/cbcruk/featured_today/main/raw_data/KR/${target}.json`
+    'https://raw.githubusercontent.com/cbcruk/featured_today/main/raw_data/KR/data.json'
   )
-
-  if (response.status === 404) {
-    return {
-      props: {
-        data: null,
-      },
-    }
-  }
-
   const data = await response.json()
 
   return {
     props: {
       data,
-      date: date || data.date,
+      date: data.date,
     },
   }
 }
+
+export default Home
