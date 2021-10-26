@@ -17,17 +17,22 @@ function Media({
   title,
   short_description,
   url,
+  position,
 }) {
   if (video_preview_url) {
     return (
-      <Box>
+      <Box
+        style={{
+          backgroundColor: `#${artwork.bg_color}`,
+        }}
+      >
         {video_preview_url && (
           <img
             src={getThumbnail(video_preview_url, '960x1266cc')}
             alt=""
             width="960"
             height="1266"
-            loading="lazy"
+            loading={position === 1 ? 'eager' : 'lazy'}
             className="w-full overflow-hidden rounded-lg rounded-b-none"
           />
         )}
@@ -45,15 +50,18 @@ function Media({
   }
 
   return (
-    <Box>
+    <Box
+      style={{
+        backgroundColor: `#${artwork.bg_color}`,
+      }}
+    >
       {artwork && (
         <img
           src={getThumbnail(artwork.url, '960x1266fn')}
           alt=""
           width="960"
           height="1266"
-          loading="lazy"
-          className="w-full overflow-hidden rounded-lg"
+          loading={position === 1 ? 'eager' : 'lazy'}
         />
       )}
       <div className="flex flex-col absolute top-0 left-0 w-full h-full pt-8 pb-6 px-5">

@@ -1,7 +1,7 @@
 import Box from './Box'
 import Grid from './Grid'
 
-function List({ label, title, apps, url }) {
+function List({ label, title, apps, url, position }) {
   return (
     <Box>
       <div className="bg-gray-200 dark:bg-gray-800">
@@ -13,7 +13,7 @@ function List({ label, title, apps, url }) {
             {title}
           </a>
         </div>
-        <Grid items={apps} />
+        <Grid items={apps} position={position} />
       </div>
     </Box>
   )

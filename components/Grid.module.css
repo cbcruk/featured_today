@@ -1,0 +1,44 @@
+.wrapper {
+  position: relative;
+  aspect-ratio: 352/297.78;
+}
+
+.wrapper::before {
+  float: left;
+  padding-top: calc(284 / 335.7 * 100%);
+  content: '';
+}
+
+.wrapper::after {
+  display: block;
+  content: '';
+  clear: both;
+}
+
+.template {
+  grid-template:
+    'g21 g22 g23 g24 g25 g26' 156px
+    'g20 g7 g8 g9 g10 g27' 156px
+    'g19 g6 g1 g2 g11 g28' 156px
+    'g18 g5 g4 g3 g12 g29' 156px
+    'g17 g16 g15 g14 g13 g30' 156px / 156px 156px 156px 156px 156px 156px;
+  transform: translate(-32px, 24px) rotate(-30deg) translate(-85px, -156px);
+  transform-origin: 99.5px;
+}
+
+.template2 {
+  grid-template:
+    'g1 g2 g3' 122px
+    'g4 g5 g6' 122px
+    'g7 g8 g9' 122px/122px 122px 122px;
+}
+
+.item:nth-of-type(4),
+.item:nth-of-type(5),
+.item:nth-of-type(6) {
+  transform: translateX(-50%);
+}
+
+.item:nth-of-type(9) ~ .item {
+  display: none;
+}

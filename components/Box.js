@@ -1,11 +1,15 @@
-function Box({ children }) {
+import clsx from 'clsx'
+import styles from './Box.module.css'
+
+function Box({ style, children }) {
   return (
-    <div className="overflow-hidden relative w-full rounded-lg shadow-lg mt-4">
-      <style jsx>{`
-        .mt-4:first-child {
-          margin-top: 0;
-        }
-      `}</style>
+    <div
+      className={clsx([
+        'overflow-hidden relative w-full rounded-lg shadow-lg mt-4',
+        styles.wrapper,
+      ])}
+      style={style}
+    >
       {children}
     </div>
   )

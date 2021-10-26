@@ -1,0 +1,17 @@
+.label:global(.is-dark) {
+  color: #fff;
+}
+
+.label:global(.is-light) {
+  color: #000;
+}
+
+.link {
+  backdrop-filter: blur(30px);
+  background-color: rgba(0, 0, 0, 0.34);
+}
+
+.image {
+  height: 100vh;
+  object-fit: cover;
+}

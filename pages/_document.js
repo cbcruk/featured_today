@@ -4,12 +4,7 @@ class CustomDocument extends Document {
   render() {
     return (
       <Html lang="ko">
-        <Head>
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap"
-          />
-        </Head>
+        <Head></Head>
         <body className="dark:bg-gray-900 dark:text-gray-300">
           <Main />
           <NextScript />

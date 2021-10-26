@@ -1,0 +1,7 @@
+.wrapper {
+  aspect-ratio: 960/1266;
+}
+
+.wrapper:first-child {
+  margin-top: 0;
+}

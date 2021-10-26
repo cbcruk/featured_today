@@ -1,19 +1,16 @@
+import clsx from 'clsx'
+import styles from './Date.module.css'
+
 function DatePicker({ children, onChange }) {
   return (
     <label className="relative">
-      <style jsx>{`
-        input[type='date']::-webkit-datetime-edit {
-          display: none;
-        }
-        input[type='date']::-webkit-calendar-picker-indicator {
-          width: 100%;
-          margin-left: 0;
-        }
-      `}</style>
       {children}
       <input
         type="date"
-        className="absolute top-0 left-0 w-full opacity-0"
+        className={clsx([
+          'absolute top-0 left-0 w-full opacity-0',
+          styles.input,
+        ])}
         onChange={onChange}
       />
     </label>
