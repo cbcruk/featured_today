@@ -23,6 +23,12 @@
   },
   "devDependencies": {
     "eslint": "7.28.0",
-    "eslint-config-next": "11.0.0"
+    "eslint-config-next": "11.0.0",
+    "@types/bun": "^1.0.12"
+  },
+  "module": "index.ts",
+  "type": "module",
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   }
 }
