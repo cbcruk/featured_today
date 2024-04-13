@@ -1,10 +1,25 @@
 import chroma from 'chroma-js'
 import clsx from 'clsx'
-import { getThumbnail } from '../lib/image'
 import Box from './Box'
 import styles from './Card.module.css'
+import { getThumbnail } from '@lib/image'
+import type { Story } from '@content/types'
 
-function Card({ apps, label, artwork, url, position }) {
+type Props = Partial<Story>
+
+function Card({ apps, label, artwork, url, position }: Props) {
+  if (!apps) {
+    return null
+  }
+
+  if (!artwork) {
+    return null
+  }
+
+  if (!url) {
+    return null
+  }
+
   return (
     <Box
       style={{

@@ -1,21 +1,17 @@
 {
+  "extends": "astro/tsconfigs/base",
   "compilerOptions": {
-    "lib": ["ESNext"],
-    "target": "ESNext",
-    "module": "NodeNext",
-    "moduleDetection": "force",
+    "strictNullChecks": true,
     "jsx": "react-jsx",
-    "allowJs": true,
-
-    /* Bundler mode */
-    "moduleResolution": "NodeNext",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "noEmit": true,
-
-    /* Linting */
-    "strict": true,
-    "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true
+    "jsxImportSource": "react",
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@lib/*": ["src/lib/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@content/*": ["src/content/*"],
+      "@test/*": ["src/test/*"],
+      "@collection/*": ["src/collection/*"]
+    }
   }
 }

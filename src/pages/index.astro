@@ -1,0 +1,17 @@
+---
+import { Stories } from '@components/Stories'
+import type { Featured } from '@content/types'
+import Layout from '@layouts/Layout.astro'
+import { getDisplayFormat } from '@lib/date'
+
+const featuredCollection = await Astro.glob<Featured['data']>(
+  '../content/featured/KR/*.json'
+)
+const [featured] = featuredCollection
+  .toSorted(() => Math.random() - 0.5)
+  .slice(0, 1)
+---
+
+<Layout title={getDisplayFormat('M월 D일 dddd', featured.date)}>
+  <Stories stories={featured.stories} />
+</Layout>

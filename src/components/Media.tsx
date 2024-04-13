@@ -1,14 +1,9 @@
-import { getThumbnail } from '../lib/image'
-import { normalize } from '../lib/text'
+import { getThumbnail } from '@lib/image'
+import { normalize } from '@lib/text'
 import Box from './Box'
+import type { Story } from '@types'
 
-function Link({ url, className, children }) {
-  return (
-    <a href={url} target="_blank" rel="noreferrer" className={className}>
-      {children}
-    </a>
-  )
-}
+type Props = Partial<Story>
 
 function Media({
   artwork,
@@ -18,12 +13,12 @@ function Media({
   short_description,
   url,
   position,
-}) {
+}: Props) {
   if (video_preview_url) {
     return (
       <Box
         style={{
-          backgroundColor: `#${artwork.bg_color}`,
+          backgroundColor: `#${artwork?.bg_color ?? 'transparent'}`,
         }}
       >
         {video_preview_url && (
@@ -38,9 +33,16 @@ function Media({
         )}
         <div className="flex flex-col p-4 bg-gray-700">
           <div className="text-sm text-gray-300">{label}</div>
-          <Link url={url} className="text-2xl text-white font-bold">
-            {title}
-          </Link>
+          {url && (
+            <a
+              href={url}
+              target="_blank"
+              rel="noreferrer"
+              className="text-2xl text-white font-bold"
+            >
+              {title}
+            </a>
+          )}
           <div className="mt-4 text-sm text-gray-400">
             {normalize(short_description)}
           </div>
@@ -52,7 +54,7 @@ function Media({
   return (
     <Box
       style={{
-        backgroundColor: `#${artwork.bg_color}`,
+        backgroundColor: `#${artwork?.bg_color ?? 'transparent'}`,
       }}
     >
       {artwork && (
@@ -67,9 +69,16 @@ function Media({
       <div className="flex flex-col absolute top-0 left-0 w-full h-full pt-8 pb-6 px-5">
         <div className="font-bold">
           <div className="text-md text-gray-300">{label}</div>
-          <Link url={url} className="text-3xl text-white">
-            {title}
-          </Link>
+          {url && (
+            <a
+              href={url}
+              target="_blank"
+              rel="noreferrer"
+              className="text-3xl text-white"
+            >
+              {title}
+            </a>
+          )}
         </div>
         <div className="mt-auto text-lg text-white">
           {normalize(short_description)}

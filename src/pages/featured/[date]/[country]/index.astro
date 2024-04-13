@@ -1,0 +1,33 @@
+---
+import { Stories } from '@components/Stories'
+import type { Featured } from '@content/types'
+import Layout from '@layouts/Layout.astro'
+import { getDisplayFormat } from '@lib/date'
+
+export async function getStaticPaths() {
+  const featuredCollection = (await Astro.glob(
+    '../../../../content/featured/KR/*.json'
+  )) as Array<Featured['data']>
+  const paths = featuredCollection.map((featured) => {
+    return {
+      params: {
+        date: featured.date.slice(0, 10),
+        country: featured.country,
+      },
+      props: {
+        featured,
+      },
+    }
+  })
+
+  return paths
+}
+
+export const prerender = true
+
+const { featured } = Astro.props
+---
+
+<Layout title={getDisplayFormat('M월 D일 dddd', featured.date)}>
+  <Stories stories={featured.stories} />
+</Layout>

@@ -1,7 +1,18 @@
+import type { Story } from '@types'
 import Box from './Box'
 import Grid from './Grid'
 
-function List({ label, title, apps, url, position }) {
+type Props = Partial<Story>
+
+function List({ label, title, apps, url, position }: Props) {
+  if (!url) {
+    return null
+  }
+
+  if (!apps) {
+    return null
+  }
+
   return (
     <Box>
       <div className="bg-gray-200 dark:bg-gray-800">
@@ -13,7 +24,7 @@ function List({ label, title, apps, url, position }) {
             {title}
           </a>
         </div>
-        <Grid items={apps} position={position} />
+        <Grid apps={apps} position={position} />
       </div>
     </Box>
   )

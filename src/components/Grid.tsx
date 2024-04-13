@@ -1,8 +1,15 @@
 import clsx from 'clsx'
-import { getThumbnail } from '../lib/image'
+import { getThumbnail } from '@lib/image'
 import styles from './Grid.module.css'
+import type { Story } from '@types'
 
-function Grid({ items, position }) {
+type Props = Partial<Story>
+
+function Grid({ apps, position }: Props) {
+  if (!apps) {
+    return null
+  }
+
   return (
     <div
       className={clsx([
@@ -14,7 +21,7 @@ function Grid({ items, position }) {
       ])}
     >
       <div className={clsx(['absolute grid', styles.template2])}>
-        {items.slice(0, 6).map((item, index) => (
+        {apps.slice(0, 6).map((item, index) => (
           <div
             key={item.app_id}
             className={clsx([
