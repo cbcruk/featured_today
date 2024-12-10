@@ -1,45 +1,49 @@
 import { readFile, readdir } from 'node:fs/promises'
 import Database from 'better-sqlite3'
 
-const db = new Database('featured_today.db', { verbose: console.log })
-
-const insertCountry = db.prepare(
-  'INSERT INTO countries (country, date) VALUES (?, ?)'
-)
-
-const insertStory = db.prepare(`
-  INSERT INTO stories (position, story_id, url, title, label, short_description, style, video_preview_url, substyle, country_id)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-`)
-
-const insertArtwork = db.prepare(`
-  INSERT INTO artworks (story_id, url, bg_color, alpha)
-  VALUES (?, ?, ?, ?)
-`)
-
-const insertTextColor = db.prepare(
-  'INSERT INTO artwork_text_colors (artwork_id, text_color) VALUES (?, ?)'
-)
-
-const insertApp = db.prepare(`
-  INSERT INTO apps (story_id, app_id, name, publisher_id, publisher_name, subtitle, icon_url, on_card)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-`)
-
-const insertOffer = db.prepare(`
-  INSERT INTO app_offers (app_id, action_text, price, price_formatted)
-  VALUES (?, ?, ?, ?)
-`)
-
-const insertCategory = db.prepare(
-  'INSERT INTO app_categories (app_id, category) VALUES (?, ?)'
-)
-
 async function main() {
   const featuredUrl = new URL('../src/content/featured', import.meta.url)
   const countries = await readdir(featuredUrl.pathname)
 
-  for (const country of countries) {
+  for (const country of countries.filter(
+    (country) => country !== '.DS_Store'
+  )) {
+    const db = new Database(`db/${country.toLowerCase()}.db`, {
+      verbose: console.log,
+    })
+
+    const insertCountry = db.prepare(
+      'INSERT INTO countries (country, date) VALUES (?, ?)'
+    )
+
+    const insertStory = db.prepare(`
+  INSERT INTO stories (position, story_id, url, title, label, short_description, style, video_preview_url, substyle, country_id)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+`)
+
+    const insertArtwork = db.prepare(`
+  INSERT INTO artworks (story_id, url, bg_color, alpha)
+  VALUES (?, ?, ?, ?)
+`)
+
+    const insertTextColor = db.prepare(
+      'INSERT INTO artwork_text_colors (artwork_id, text_color) VALUES (?, ?)'
+    )
+
+    const insertApp = db.prepare(`
+  INSERT INTO apps (story_id, app_id, name, publisher_id, publisher_name, subtitle, icon_url, on_card)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+`)
+
+    const insertOffer = db.prepare(`
+  INSERT INTO app_offers (app_id, action_text, price, price_formatted)
+  VALUES (?, ?, ?, ?)
+`)
+
+    const insertCategory = db.prepare(
+      'INSERT INTO app_categories (app_id, category) VALUES (?, ?)'
+    )
+
     const countryUrl = new URL(
       `../src/content/featured/${country}`,
       import.meta.url
