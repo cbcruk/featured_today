@@ -5,6 +5,10 @@ import { isList } from './Stories.helpers'
 import List from './List'
 
 export function Stories({ stories }: Props) {
+  if (!stories) {
+    return null
+  }
+
   return (
     <>
       {stories
