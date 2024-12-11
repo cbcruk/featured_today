@@ -9,6 +9,6 @@ const dateCollection = await getCollection('dates')
 ---
 
 <Layout title={getDisplayFormat('M월 D일 dddd', `featured.date`)}>
-  <pre>{JSON.stringify(dateCollection)}</pre>
+  <pre>{JSON.stringify(dateCollection, null, 2)}</pre>
   <!-- <Stories stories={featured.stories} /> -->
 </Layout>
