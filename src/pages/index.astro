@@ -3,12 +3,36 @@ import { Stories } from '@components/Stories'
 import type { Featured } from '@content/types'
 import Layout from '@layouts/Layout.astro'
 import { getDisplayFormat } from '@lib/date'
+import { db, schemas } from '@lib/db'
+import { getEntries } from 'astro:content'
 import { getCollection } from 'astro:content'
+import { sql, getTableColumns, eq } from 'drizzle-orm'
 
 const dateCollection = await getCollection('dates')
+const [dateEntry] = dateCollection
+  // .toSorted(() => Math.random() - 0.5)
+  .slice(0, 1)
+const storyEntries = await getEntries(dateEntry.data.stories)
+
+// const rows = await db
+//   .select({
+//     ...getTableColumns(schemas.apps),
+//     // offer: schemas.appOffers,
+//     // categories: sql<string>`GROUP_CONCAT(appCategories.id)`,
+//   })
+//   .from(schemas.apps)
+//   .leftJoin(schemas.appOffers, eq(schemas.appOffers.appId, schemas.apps.id))
+//   .leftJoin(
+//     schemas.appCategories,
+//     eq(schemas.appCategories.appId, schemas.apps.id)
+//   )
+//   .groupBy(schemas.apps.id)
+
+// console.log(rows)
 ---
 
 <Layout title={getDisplayFormat('M월 D일 dddd', `featured.date`)}>
-  <pre>{JSON.stringify(dateCollection, null, 2)}</pre>
+  <pre>{JSON.stringify(dateEntry.data, null, 2)}</pre>
+  <pre>{JSON.stringify(storyEntries, null, 2)}</pre>
   <!-- <Stories stories={featured.stories} /> -->
 </Layout>
