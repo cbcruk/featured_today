@@ -6,14 +6,13 @@ const dates = defineCollection({
   async loader() {
     const rows = await db
       .select({
-        id: schemas.countries.id,
-        date: schemas.countries.date,
+        ...getTableColumns(schemas.dates),
         stories: sql<string>`GROUP_CONCAT(stories.id)`,
       })
       .from(schemas.countries)
       .leftJoin(
         schemas.stories,
-        eq(schemas.countries.id, schemas.stories.countryId)
+        eq(schemas.countries.id, schemas.stories.country_id)
       )
       .groupBy(schemas.countries.id, schemas.countries.date)
 
@@ -29,7 +28,7 @@ const dates = defineCollection({
   },
   schema: z.object({
     date: z.string(),
-    stories: z.array(reference('stories')),
+    stories: z.array(z.string()),
   }),
 })
 
@@ -44,9 +43,9 @@ const stories = defineCollection({
       .from(schemas.stories)
       .leftJoin(
         schemas.artworks,
-        eq(schemas.stories.id, schemas.artworks.storyId)
+        eq(schemas.stories.id, schemas.artworks.story_id)
       )
-      .leftJoin(schemas.apps, eq(schemas.stories.id, schemas.apps.storyId))
+      .leftJoin(schemas.apps, eq(schemas.stories.id, schemas.apps.story_id))
       .groupBy(schemas.stories.id)
 
     const result = rows.map((row) => {
@@ -70,14 +69,15 @@ const stories = defineCollection({
     substyle: z.string().nullable(),
     video_preview_url: z.string().nullable().optional(),
     short_description: z.string().nullable().optional(),
-    artwork: reference('artworks').nullable(),
-    apps: z.array(reference('apps')).nullable(),
+    artwork: z.string().nullable(),
+    apps: z.array(z.string()).nullable(),
   }),
 })
 
 const artworks = defineCollection({
   async loader() {
     const rows = await db.select().from(schemas.artworks)
+
     const result = rows.map((row) => {
       return {
         ...row,
@@ -95,54 +95,48 @@ const artworks = defineCollection({
 })
 
 const apps = defineCollection({
-  loader() {
-    // const rows = await db
-    //   .select({
-    //     ...getTableColumns(schemas.apps),
-    //     // offer: schemas.appOffers,
-    //     // categories: sql<string>`GROUP_CONCAT(appCategories.id)`,
-    //   })
-    //   .from(schemas.apps)
-    //   .leftJoin(schemas.appOffers, eq(schemas.appOffers.appId, schemas.apps.id))
-    //   .leftJoin(
-    //     schemas.appCategories,
-    //     eq(schemas.appCategories.appId, schemas.apps.id)
-    //   )
-    //   .groupBy(schemas.apps.id)
-    // const result = rows.slice(0, 2).map((row) => {
-    //   return {
-    //     id: `${row.id}`,
-    //     name: row.name,
-    //     publisherId: row.publisherId,
-    //     publisherName: row.publisherName,
-    //     subtitle: row.subtitle,
-    //     iconUrl: row.iconUrl,
-    //     onCard: JSON.parse(row.onCard),
-    //   }
-    // })
+  async loader() {
+    const rows = await db
+      .select({
+        ...getTableColumns(schemas.apps),
+        offer: schemas.appOffers.id,
+        categories: sql<string>`GROUP_CONCAT(appCategories.id)`,
+      })
+      .from(schemas.apps)
+      .leftJoin(
+        schemas.appOffers,
+        eq(schemas.appOffers.app_id, schemas.apps.id)
+      )
+      .leftJoin(
+        schemas.appCategories,
+        eq(schemas.appCategories.app_id, schemas.apps.id)
+      )
+      .groupBy(schemas.apps.id)
+    const result = rows.slice(0, 2).map((row) => {
+      return {
+        id: `${row.id}`,
+        name: row.name,
+        publisher_id: row.publisher_id,
+        publisher_name: row.publisher_name,
+        subtitle: row.subtitle,
+        icon_url: row.icon_url,
+        on_card: JSON.parse(row.on_card),
+        offer: `${row.offer}`,
+        categories: row.categories.split(','),
+      }
+    })
 
-    // console.log(result)
-
-    return [
-      {
-        id: '1',
-        name: 'Score! Hero 2',
-        publisherId: '471316020',
-        publisherName: 'First Touch Games Ltd.',
-        subtitle: '새로운 영웅!',
-        iconUrl:
-          'https://is5-ssl.mzstatic.com/image/thumb/Purple125/v4/d1/8d/fc/d18dfcc8-42ef-bafc-8dad-2960964ce190/AppIcon-1x_U007emarketing-0-10-0-85-220.png/1024x1024bb.png',
-        onCard: true,
-      },
-    ]
+    return result
   },
   schema: z.object({
     name: z.string(),
-    publisherId: z.string(),
-    publisherName: z.string(),
+    publisher_id: z.string(),
+    publisher_name: z.string(),
     subtitle: z.string().nullable(),
-    iconUrl: z.string(),
-    onCard: z.boolean(),
+    icon_url: z.string(),
+    on_card: z.boolean(),
+    offer: z.string(),
+    categories: z.array(z.string()),
   }),
 })
 

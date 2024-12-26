@@ -21,11 +21,11 @@ const stories = sqliteTable(
     url: text('url'),
     title: text('title'),
     label: text('label'),
-    shortDescription: text('short_description'),
+    short_description: text('short_description'),
     style: text('style').notNull(),
-    videoPreviewUrl: text('video_preview_url'),
+    video_preview_url: text('video_preview_url'),
     substyle: text('substyle'),
-    countryId: integer('country_id')
+    country_id: integer('country_id')
       .notNull()
       .references(() => countries.id),
   },
@@ -36,11 +36,11 @@ const artworks = sqliteTable(
   'artworks',
   {
     id: integer('id').primaryKey(),
-    storyId: integer('story_id')
+    story_id: integer('story_id')
       .notNull()
       .references(() => stories.id),
     url: text('url').notNull(),
-    bgColor: text('bg_color'),
+    bg_color: text('bg_color'),
     alpha: text('alpha').notNull(),
   },
   () => []
@@ -50,10 +50,10 @@ const artworkTextColors = sqliteTable(
   'artwork_text_colors',
   {
     id: integer('id').primaryKey(),
-    artworkId: integer('artwork_id')
+    artwork_id: integer('artwork_id')
       .notNull()
       .references(() => artworks.id),
-    textColor: text('text_color'),
+    text_color: text('text_color'),
   },
   () => []
 )
@@ -62,16 +62,16 @@ const apps = sqliteTable(
   'apps',
   {
     id: integer('id').primaryKey(),
-    storyId: integer('story_id')
+    story_id: integer('story_id')
       .notNull()
       .references(() => stories.id),
-    appId: integer('app_id').notNull(),
+    app_id: integer('app_id').notNull(),
     name: text('name').notNull(),
-    publisherId: text('publisher_id').notNull(),
-    publisherName: text('publisher_name').notNull(),
+    publisher_id: text('publisher_id').notNull(),
+    publisher_name: text('publisher_name').notNull(),
     subtitle: text('subtitle'),
-    iconUrl: text('icon_url').notNull(),
-    onCard: text('on_card').notNull(),
+    icon_url: text('icon_url').notNull(),
+    on_card: text('on_card').notNull(),
   },
   () => []
 )
@@ -80,12 +80,12 @@ const appOffers = sqliteTable(
   'app_offers',
   {
     id: integer('id').primaryKey(),
-    appId: integer('app_id')
+    app_id: integer('app_id')
       .notNull()
       .references(() => apps.id),
-    actionText: text('action_text').notNull(),
+    action_text: text('action_text').notNull(),
     price: integer('price').notNull(),
-    priceFormatted: text('price_formatted').notNull(),
+    price_formatted: text('price_formatted').notNull(),
   },
   () => []
 )
