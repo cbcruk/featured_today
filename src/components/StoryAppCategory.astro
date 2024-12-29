@@ -1,0 +1,14 @@
+---
+import type { AppEntry } from '@content/types'
+import { getCollection } from 'astro:content'
+
+type Props = Pick<AppEntry, 'id'>
+
+const { id } = Astro.props
+const appCategory = await getCollection(
+  'appCategories',
+  (appCategory) => appCategory.data.app_id === id
+)
+---
+
+<!-- <pre>appCategory: {JSON.stringify(appCategory, null, 2)}</pre> -->

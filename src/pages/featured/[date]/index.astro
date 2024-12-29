@@ -1,0 +1,33 @@
+---
+import { Stories } from '@components/Stories'
+import Layout from '@layouts/Layout.astro'
+import { getStories } from '@lib/collection'
+import { getDisplayFormat } from '@lib/date'
+import { getCollection } from 'astro:content'
+
+export async function getStaticPaths() {
+  const dates = await getCollection('dates')
+  const paths = dates.map((date) => {
+    return {
+      params: {
+        date: date.data.date,
+      },
+      props: {
+        id: date.id,
+      },
+    }
+  })
+
+  return paths
+}
+
+export const prerender = false
+
+const { id } = Astro.props
+const { date } = Astro.params
+const stories = await getStories(id)
+---
+
+<Layout title={getDisplayFormat('M월 D일 dddd', date)}>
+  <Stories data={stories} />
+</Layout>

@@ -1,5 +1,5 @@
 import { db, schemas } from '@lib/db'
-import { defineCollection, z, reference } from 'astro:content'
+import { defineCollection, z } from 'astro:content'
 import { eq, getTableColumns, sql } from 'drizzle-orm'
 
 const dates = defineCollection({
@@ -9,12 +9,9 @@ const dates = defineCollection({
         ...getTableColumns(schemas.dates),
         stories: sql<string>`GROUP_CONCAT(stories.id)`,
       })
-      .from(schemas.countries)
-      .leftJoin(
-        schemas.stories,
-        eq(schemas.countries.id, schemas.stories.country_id)
-      )
-      .groupBy(schemas.countries.id, schemas.countries.date)
+      .from(schemas.dates)
+      .leftJoin(schemas.stories, eq(schemas.dates.id, schemas.stories.date_id))
+      .groupBy(schemas.dates.id, schemas.dates.date)
 
     const result = rows.map((row) => {
       return {
@@ -47,11 +44,11 @@ const stories = defineCollection({
       )
       .leftJoin(schemas.apps, eq(schemas.stories.id, schemas.apps.story_id))
       .groupBy(schemas.stories.id)
-
     const result = rows.map((row) => {
       return {
         ...row,
         id: `${row.id}`,
+        date_id: `${row.date_id}`,
         artwork: row.artwork?.toString() ?? null,
         apps: row.apps?.split(',') ?? [],
       }
@@ -71,26 +68,47 @@ const stories = defineCollection({
     short_description: z.string().nullable().optional(),
     artwork: z.string().nullable(),
     apps: z.array(z.string()).nullable(),
+    date_id: z.string(),
   }),
 })
 
 const artworks = defineCollection({
   async loader() {
     const rows = await db.select().from(schemas.artworks)
-
     const result = rows.map((row) => {
       return {
         ...row,
         id: `${row.id}`,
+        story_id: `${row.story_id}`,
       }
     })
 
     return result
   },
   schema: z.object({
+    story_id: z.string(),
     url: z.string(),
     bg_color: z.string().nullable().optional(),
     alpha: z.string(),
+  }),
+})
+
+const artworkTextColors = defineCollection({
+  async loader() {
+    const rows = await db.select().from(schemas.artworkTextColors)
+    const result = rows.map((row) => {
+      return {
+        ...row,
+        id: `${row.id}`,
+        artwork_id: `${row.artwork_id}`,
+      }
+    })
+
+    return result
+  },
+  schema: z.object({
+    artwork_id: z.string(),
+    text_color: z.string().nullable(),
   }),
 })
 
@@ -99,8 +117,8 @@ const apps = defineCollection({
     const rows = await db
       .select({
         ...getTableColumns(schemas.apps),
-        offer: schemas.appOffers.id,
-        categories: sql<string>`GROUP_CONCAT(appCategories.id)`,
+        offer: schemas.appOffers,
+        categories: sql<string>`GROUP_CONCAT(app_categories.category)`,
       })
       .from(schemas.apps)
       .leftJoin(
@@ -112,16 +130,16 @@ const apps = defineCollection({
         eq(schemas.appCategories.app_id, schemas.apps.id)
       )
       .groupBy(schemas.apps.id)
-    const result = rows.slice(0, 2).map((row) => {
+    const result = rows.map((row) => {
       return {
+        ...row,
         id: `${row.id}`,
-        name: row.name,
-        publisher_id: row.publisher_id,
-        publisher_name: row.publisher_name,
-        subtitle: row.subtitle,
-        icon_url: row.icon_url,
+        story_id: `${row.story_id}`,
         on_card: JSON.parse(row.on_card),
-        offer: `${row.offer}`,
+        offer: {
+          ...row.offer,
+          app_id: `${row.app_id}`,
+        },
         categories: row.categories.split(','),
       }
     })
@@ -135,8 +153,53 @@ const apps = defineCollection({
     subtitle: z.string().nullable(),
     icon_url: z.string(),
     on_card: z.boolean(),
-    offer: z.string(),
+    offer: z.object({
+      action_text: z.string(),
+      price: z.number(),
+      price_format: z.string().optional(),
+    }),
     categories: z.array(z.string()),
+    story_id: z.string(),
+  }),
+})
+
+const appOffers = defineCollection({
+  async loader() {
+    const rows = await db.select().from(schemas.appOffers)
+    const result = rows.map((row) => {
+      return {
+        ...row,
+        id: `${row.id}`,
+        app_id: `${row.app_id}`,
+      }
+    })
+
+    return result
+  },
+  schema: z.object({
+    app_id: z.string(),
+    action_text: z.string(),
+    price: z.number(),
+    price_format: z.string().optional(),
+  }),
+})
+
+const appCategories = defineCollection({
+  async loader() {
+    const rows = await db.select().from(schemas.appCategories)
+    const result = rows.map((row) => {
+      return {
+        ...row,
+        id: `${row.id}`,
+        app_id: `${row.app_id}`,
+      }
+    })
+
+    return result
+  },
+  schema: z.object({
+    app_id: z.string(),
+    category: z.number(),
   }),
 })
 
@@ -144,5 +207,8 @@ export const collections = {
   dates,
   stories,
   artworks,
+  artworkTextColors,
   apps,
+  appOffers,
+  appCategories,
 }

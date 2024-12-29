@@ -4,7 +4,7 @@ import type { ComponentProps } from 'react'
 
 type Props = ComponentProps<'input'>
 
-export function DatePicker({ onChange, ...props }: Props) {
+export function DatePicker(props: Props) {
   return (
     <label className="relative text-xl self-end">
       🗓️
@@ -15,7 +15,6 @@ export function DatePicker({ onChange, ...props }: Props) {
           'absolute top-0 left-0 w-full opacity-0',
           styles.input,
         ])}
-        onChange={onChange}
         {...props}
       />
     </label>

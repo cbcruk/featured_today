@@ -1,39 +1,17 @@
 ---
 import { Stories } from '@components/Stories'
-import type { Featured } from '@content/types'
 import Layout from '@layouts/Layout.astro'
+import { getStories } from '@lib/collection'
 import { getDisplayFormat } from '@lib/date'
-import { db, schemas } from '@lib/db'
-import { getEntries } from 'astro:content'
 import { getCollection } from 'astro:content'
-import { sql, getTableColumns, eq } from 'drizzle-orm'
 
 const dateCollection = await getCollection('dates')
-const [dateEntry] = dateCollection
-  // .toSorted(() => Math.random() - 0.5)
-  .slice(0, 1)
+const dateEntry = dateCollection.at(-1)!
+const stories = await getStories(dateEntry.id)
 
-// console.log(dateEntry)
-// const storyEntries = await getEntries(dateEntry.data.stories)
-
-// const rows = await db
-//   .select({
-//     ...getTableColumns(schemas.apps),
-//     // offer: schemas.appOffers,
-//     // categories: sql<string>`GROUP_CONCAT(appCategories.id)`,
-//   })
-//   .from(schemas.apps)
-//   .leftJoin(schemas.appOffers, eq(schemas.appOffers.appId, schemas.apps.id))
-//   .leftJoin(
-//     schemas.appCategories,
-//     eq(schemas.appCategories.appId, schemas.apps.id)
-//   )
-//   .groupBy(schemas.apps.id)
-
-// console.log(rows)
+export const prerender = true
 ---
 
-<Layout title={getDisplayFormat('M월 D일 dddd', `featured.date`)}>
-  <pre>{JSON.stringify(dateEntry, null, 2)}</pre>
-  <!-- <Stories stories={featured.stories} /> -->
+<Layout title={getDisplayFormat('M월 D일 dddd', `${dateEntry.data.date}`)}>
+  <Stories data={stories} />
 </Layout>

@@ -2,8 +2,8 @@ import Database from 'better-sqlite3'
 import { drizzle } from 'drizzle-orm/better-sqlite3'
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
-const countries = sqliteTable(
-  'countries',
+const dates = sqliteTable(
+  'dates',
   {
     id: integer('id').primaryKey(),
     country: text('country').notNull(),
@@ -25,9 +25,9 @@ const stories = sqliteTable(
     style: text('style').notNull(),
     video_preview_url: text('video_preview_url'),
     substyle: text('substyle'),
-    country_id: integer('country_id')
+    date_id: integer('date_id')
       .notNull()
-      .references(() => countries.id),
+      .references(() => dates.id),
   },
   () => []
 )
@@ -94,7 +94,7 @@ const appCategories = sqliteTable(
   'app_categories',
   {
     id: integer('id').primaryKey(),
-    appId: integer('app_id')
+    app_id: integer('app_id')
       .notNull()
       .references(() => apps.id),
     category: integer('category').notNull(),
@@ -107,7 +107,7 @@ const client = new Database('db/kr.db')
 export const db = drizzle({ client })
 
 export const schemas = {
-  countries,
+  dates,
   stories,
   artworks,
   artworkTextColors,

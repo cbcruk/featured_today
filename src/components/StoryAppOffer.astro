@@ -1,0 +1,15 @@
+---
+import type { AppEntry } from '@content/types'
+import { getEntry } from 'astro:content'
+import { getCollection } from 'astro:content'
+
+type Props = Pick<AppEntry, 'id'>
+
+const { id } = Astro.props
+const [appOffer] = await getCollection(
+  'appOffers',
+  (appOffer) => appOffer.data.app_id === id
+)
+---
+
+<pre>{appOffer.id}</pre>

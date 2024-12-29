@@ -3,65 +3,69 @@ import clsx from 'clsx'
 import Box from './Box'
 import styles from './Card.module.css'
 import { getThumbnail } from '@lib/image'
-import type { Story } from '@content/types'
+import type { StoryData } from '@lib/collection'
 
-type Props = Partial<Story>
+type Props = {
+  data: StoryData
+}
 
-function Card({ apps, label, artwork, url, position }: Props) {
-  if (!apps) {
+function getLuminance(artwork: Props['data']['artwork']) {
+  if (!artwork?.bg_color) {
+    return 1
+  }
+
+  return chroma(artwork.bg_color).luminance()
+}
+
+function Card({ data }: Props) {
+  if (!data.artwork) {
     return null
   }
 
-  if (!artwork) {
-    return null
-  }
-
-  if (!url) {
+  if (!data.url) {
     return null
   }
 
   return (
     <Box
       style={{
-        backgroundColor: `#${artwork.bg_color}`,
+        backgroundColor: `#${data.artwork.bg_color}`,
       }}
     >
       <img
-        src={getThumbnail(artwork.url, '480x633fn')}
+        src={getThumbnail(data.artwork.url, '480x633fn')}
         alt=""
         width="480"
         height="633"
-        loading={position === 1 ? 'eager' : 'lazy'}
+        loading={data.position === 1 ? 'eager' : 'lazy'}
       />
       <div className="absolute bottom-0 left-0 flex flex-col w-full h-full">
         <div className="p-4 mt-auto font-extrabold text-4xl whitespace-pre">
           <span
             className={clsx([
               styles.label,
-              chroma(artwork.bg_color).luminance() < 0.5
-                ? 'is-dark'
-                : 'is-light',
+              getLuminance(data.artwork) < 0.5 ? 'is-dark' : 'is-light',
             ])}
           >
-            {label}
+            {data.label}
           </span>
         </div>
         <a
-          href={url}
+          href={data.url}
           target="_blank"
           rel="noreferrer"
           className={clsx(['flex align-middle gap-3 p-4', styles.link])}
         >
           <img
-            src={getThumbnail(apps[0].icon_url, '160x160sr')}
+            src={getThumbnail(data.apps[0].icon_url, '160x160sr')}
             alt=""
             width={52}
             height={52}
             className="rounded-lg"
           />
           <div className="flex flex-col justify-center text-white">
-            <div className="text-sm">{apps[0].name}</div>
-            <div className="text-xs">{apps[0].subtitle}</div>
+            <div className="text-sm">{data.apps[0].name}</div>
+            <div className="text-xs">{data.apps[0].subtitle}</div>
           </div>
         </a>
       </div>
