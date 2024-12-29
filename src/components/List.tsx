@@ -1,15 +1,13 @@
-import type { Story } from '@types'
+import type { StoryData } from '@lib/collection'
 import Box from './Box'
-import Grid from './Grid'
+import type { PropsWithChildren } from 'react'
 
-type Props = Partial<Story>
+type Props = {
+  data: StoryData
+}
 
-function List({ label, title, apps, url, position }: Props) {
-  if (!url) {
-    return null
-  }
-
-  if (!apps) {
+function List({ data, children }: PropsWithChildren<Props>) {
+  if (!data.url) {
     return null
   }
 
@@ -18,13 +16,18 @@ function List({ label, title, apps, url, position }: Props) {
       <div className="bg-gray-200 dark:bg-gray-800">
         <div className="py-8 px-5 font-bold">
           <div className="text-md text-gray-600 dark:text-gray-300">
-            {label}
+            {data.label}
           </div>
-          <a href={url} target="_blank" rel="noreferrer" className="text-3xl">
-            {title}
+          <a
+            href={data.url}
+            target="_blank"
+            rel="noreferrer"
+            className="text-3xl"
+          >
+            {data.title}
           </a>
         </div>
-        <Grid apps={apps} position={position} />
+        {children}
       </div>
     </Box>
   )

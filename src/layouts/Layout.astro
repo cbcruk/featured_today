@@ -8,6 +8,7 @@ interface Props {
 }
 
 const { title } = Astro.props
+const { date } = Astro.params
 ---
 
 <!doctype html>
@@ -24,7 +25,10 @@ const { title } = Astro.props
     <div class="max-w-sm p-4 m-auto">
       <Header>
         <Header.Title>{title}</Header.Title>
-        <Header.DatePicker client:only="react" />
+        <Header.DatePicker
+          client:only="react"
+          defaultMonth={new Date(date ?? '2022-10-01')}
+        />
       </Header>
       <Body>
         <slot />

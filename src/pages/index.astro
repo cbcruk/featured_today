@@ -1,17 +1,17 @@
 ---
 import { Stories } from '@components/Stories'
-import type { Featured } from '@content/types'
 import Layout from '@layouts/Layout.astro'
+import { getStories } from '@lib/collection'
 import { getDisplayFormat } from '@lib/date'
+import { getCollection } from 'astro:content'
 
-const featuredCollection = await Astro.glob<Featured['data']>(
-  '../content/featured/KR/*.json'
-)
-const [featured] = featuredCollection
-  .toSorted(() => Math.random() - 0.5)
-  .slice(0, 1)
+const dateCollection = await getCollection('dates')
+const dateEntry = dateCollection.at(-1)!
+const stories = await getStories(dateEntry.id)
+
+export const prerender = true
 ---
 
-<Layout title={getDisplayFormat('M월 D일 dddd', featured.date)}>
-  <Stories stories={featured.stories} />
+<Layout title={getDisplayFormat('M월 D일 dddd', `${dateEntry.data.date}`)}>
+  <Stories data={stories} />
 </Layout>

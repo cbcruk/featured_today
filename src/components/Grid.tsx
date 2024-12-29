@@ -1,29 +1,27 @@
 import clsx from 'clsx'
 import { getThumbnail } from '@lib/image'
 import styles from './Grid.module.css'
-import type { Story } from '@types'
+import type { StoryData } from '@lib/collection'
 
-type Props = Partial<Story>
+type Props = {
+  data: StoryData
+}
 
-function Grid({ apps, position }: Props) {
-  if (!apps) {
-    return null
-  }
-
+function Grid({ data }: Props) {
   return (
     <div
       className={clsx([
         'aspect-ratio overflow-hidden',
         styles.wrapper,
         {
-          'is-not-visible': position !== 1,
+          'is-not-visible': data.position !== 1,
         },
       ])}
     >
       <div className={clsx(['absolute grid', styles.template2])}>
-        {apps.slice(0, 6).map((item, index) => (
+        {data.apps.slice(0, 6).map((item, index) => (
           <div
-            key={item.app_id}
+            key={item.id}
             className={clsx([
               'overflow-hidden rounded-2xl shadow m-2',
               styles.item,

@@ -1,5 +1,7 @@
 {
   "extends": "astro/tsconfigs/base",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"],
   "compilerOptions": {
     "strictNullChecks": true,
     "jsx": "react-jsx",
@@ -11,7 +13,14 @@
       "@layouts/*": ["src/layouts/*"],
       "@content/*": ["src/content/*"],
       "@test/*": ["src/test/*"],
-      "@collection/*": ["src/collection/*"]
-    }
+      "@collection/*": ["src/collection/*"],
+      "@rsc/*": ["src/rsc/*"]
+    },
+    "plugins": [
+      {
+        "name": "@astrojs/ts-plugin"
+      }
+    ],
+    "verbatimModuleSyntax": true
   }
 }
