@@ -5,12 +5,27 @@ import { getStories } from '@lib/collection'
 import { getDisplayFormat } from '@lib/date'
 import { getCollection } from 'astro:content'
 
+export async function getStaticPaths() {
+  const dateCollection = await getCollection('dates')
+  const paths = dateCollection.map((dateEntry) => {
+    return {
+      params: {
+        date: dateEntry.data.date,
+      },
+      props: {
+        id: dateEntry.id,
+      },
+    }
+  })
+
+  return paths
+}
+
+const { id } = Astro.props
 const { date } = Astro.params
-const dateCollection = await getCollection('dates')
-const dateEntry = dateCollection.find(
-  (dateEntry) => dateEntry.data.date === date
-)
-const stories = await getStories(dateEntry?.id)
+const stories = await getStories(id)
+
+export const prerender = true
 ---
 
 <Layout title={getDisplayFormat('M월 D일 dddd', date)}>
