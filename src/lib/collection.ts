@@ -1,7 +1,11 @@
 import type { ArtworkEntry, DateEntry, StoryEntry } from '@content/types'
 import { getCollection } from 'astro:content'
 
-export async function getStories(dataEntryId: DateEntry['id']) {
+export async function getStories(dataEntryId: DateEntry['id'] | undefined) {
+  if (!dataEntryId) {
+    return []
+  }
+
   const storyCollection = await getCollection('stories')
   const artworkCollection = await getCollection('artworks')
   const artworkTextColorCollection = await getCollection('artworkTextColors')
