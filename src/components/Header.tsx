@@ -21,7 +21,9 @@ function DatePicker() {
       min="2021-05-30"
       max="2022-10-01"
       onChange={(e) => {
-        navigate(`/featured/${e.target.value}/`)
+        console.log(e.target.value)
+
+        // navigate(`/featured/${e.target.value}/`)
       }}
     />
   )

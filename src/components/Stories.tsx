@@ -19,16 +19,16 @@ export function Stories({ data }: Props) {
             case 'app_of_day':
             case 'game_of_day':
             case 'editorial':
-              return <Card data={story} />
+              return <Card key={story.id} data={story} />
             default:
-              return <Media data={story} />
+              return <Media key={story.id} data={story} />
           }
         })}
       {data
         .filter((story) => isList(story.substyle))
         .map((story) => {
           return (
-            <List data={story}>
+            <List key={story.id} data={story}>
               <Grid data={story} />
             </List>
           )
