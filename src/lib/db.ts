@@ -12,6 +12,8 @@ const dates = sqliteTable(
   () => []
 )
 
+export type SelectDate = typeof dates.$inferSelect
+
 const stories = sqliteTable(
   'stories',
   {
@@ -32,6 +34,8 @@ const stories = sqliteTable(
   () => []
 )
 
+export type SelectStory = typeof stories.$inferSelect
+
 const artworks = sqliteTable(
   'artworks',
   {
@@ -46,6 +50,8 @@ const artworks = sqliteTable(
   () => []
 )
 
+export type SelectArtwork = typeof artworks.$inferSelect
+
 const artworkTextColors = sqliteTable(
   'artwork_text_colors',
   {
@@ -57,6 +63,8 @@ const artworkTextColors = sqliteTable(
   },
   () => []
 )
+
+export type SelectArtworkTextColor = typeof artworkTextColors.$inferSelect
 
 const apps = sqliteTable(
   'apps',
@@ -76,6 +84,8 @@ const apps = sqliteTable(
   () => []
 )
 
+export type SelectApp = typeof apps.$inferSelect
+
 const appOffers = sqliteTable(
   'app_offers',
   {
@@ -90,6 +100,8 @@ const appOffers = sqliteTable(
   () => []
 )
 
+export type SelectAppOffer = typeof appOffers.$inferSelect
+
 const appCategories = sqliteTable(
   'app_categories',
   {
@@ -101,6 +113,8 @@ const appCategories = sqliteTable(
   },
   () => []
 )
+
+export type SelectAppCategory = typeof appCategories.$inferSelect
 
 const client = new Database('db/kr.db')
 
