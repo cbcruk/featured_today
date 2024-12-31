@@ -2,6 +2,7 @@
 import { Header } from '@components/Header'
 import { Body } from '@components/Body'
 import '../styles/globals.css'
+import { LAST_DATE } from 'src/constants'
 
 interface Props {
   title: string
@@ -27,7 +28,7 @@ const { date } = Astro.params
         <Header.Title>{title}</Header.Title>
         <Header.DatePicker
           client:only="react"
-          defaultMonth={new Date(date ?? '2022-10-01')}
+          defaultMonth={new Date(date ?? LAST_DATE)}
         />
       </Header>
       <Body>

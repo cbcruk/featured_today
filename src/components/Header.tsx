@@ -18,7 +18,9 @@ function Title({ children }: PropsWithChildren) {
   )
 }
 
-function DatePicker(props: ComponentProps<typeof DatePickerPrimitive>) {
+type DatePicker = ComponentProps<typeof DatePickerPrimitive>
+
+function DatePicker(props: Pick<DatePicker, 'defaultMonth'>) {
   return (
     <DatePickerPrimitive
       mode="single"
