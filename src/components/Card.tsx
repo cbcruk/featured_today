@@ -28,6 +28,7 @@ function Card({ data }: Props) {
 
   return (
     <Box
+      data-has-artwork="true"
       style={{
         backgroundColor: `#${data.artwork.bg_color}`,
       }}

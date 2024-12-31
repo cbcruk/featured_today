@@ -11,6 +11,7 @@ function Media({ data }: Props) {
   if (data.video_preview_url) {
     return (
       <Box
+        data-has-artwork="true"
         style={{
           backgroundColor: `#${data.artwork?.bg_color ?? 'transparent'}`,
         }}
@@ -45,6 +46,7 @@ function Media({ data }: Props) {
 
   return (
     <Box
+      data-has-artwork="true"
       style={{
         backgroundColor: `#${data.artwork?.bg_color ?? 'transparent'}`,
       }}

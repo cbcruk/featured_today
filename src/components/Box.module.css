@@ -1,4 +1,4 @@
-.wrapper {
+.wrapper[data-has-artowrk='true'] {
   aspect-ratio: 960/1266;
 }
 
