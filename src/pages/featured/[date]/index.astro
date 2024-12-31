@@ -3,29 +3,77 @@ import { Stories } from '@components/Stories'
 import Layout from '@layouts/Layout.astro'
 import { getStories } from '@lib/collection'
 import { getDisplayFormat } from '@lib/date'
+import { db, schemas } from '@lib/db'
 import { getCollection } from 'astro:content'
+import { getTableColumns, sql, eq } from 'drizzle-orm'
 
-export async function getStaticPaths() {
-  const dateCollection = await getCollection('dates')
-  const paths = dateCollection.map((dateEntry) => {
-    return {
-      params: {
-        date: dateEntry.data.date,
-      },
-      props: {
-        id: dateEntry.id,
-      },
-    }
-  })
+const { date } = Astro.params
 
-  return paths
+async function getDateId() {
+  if (!date) {
+    return null
+  }
+
+  const rows = await db
+    .select()
+    .from(schemas.dates)
+    .where(eq(schemas.dates.date, date))
+  const row = rows.at(0)
+
+  if (!row) {
+    return null
+  }
+
+  return row.id
 }
 
-const { id } = Astro.props
-const { date } = Astro.params
-const stories = await getStories(id)
+async function getArtWork(storyId) {
+  const rows = await db
+    .select()
+    .from(schemas.artworks)
+    .where(eq(schemas.artworks.story_id, storyId))
 
-export const prerender = true
+  return rows.at(0)
+}
+
+async function getApps(storyId) {
+  const rows = await db
+    .select()
+    .from(schemas.apps)
+    .where(eq(schemas.apps.story_id, storyId))
+
+  return rows
+}
+
+async function getStories(dateId: Awaited<ReturnType<typeof getDateId>>) {
+  if (!dateId) {
+    return []
+  }
+
+  const storyRows = await db
+    .select()
+    .from(schemas.stories)
+    .where(eq(schemas.stories.date_id, dateId))
+    .groupBy(schemas.stories.id)
+  const stories = await Promise.all(
+    storyRows.map(async (row) => {
+      return {
+        ...row,
+        id: `${row.id}`,
+        date_id: `${row.date_id}`,
+        artwork: await getArtWork(row.id),
+        apps: await getApps(row.id),
+      }
+    })
+  )
+
+  return stories
+}
+
+const dateId = await getDateId()
+const stories = await getStories(dateId)
+
+export const prerender = false
 ---
 
 <Layout title={getDisplayFormat('M월 D일 dddd', date)}>
