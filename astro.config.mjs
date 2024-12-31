@@ -15,5 +15,7 @@ export default defineConfig({
     partytown(),
   ],
   output: 'server',
-  adapter: vercel(),
+  adapter: vercel({
+    includeFiles: ['./db/kr.db'],
+  }),
 })
