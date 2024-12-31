@@ -6,7 +6,7 @@ function Box({ children, ...props }: ComponentProps<'div'>) {
   return (
     <div
       className={clsx([
-        'overflow-hidden relative w-full rounded-lg shadow-lg mt-4',
+        'overflow-hidden relative w-full rounded-lg shadow-lg',
         styles.wrapper,
       ])}
       {...props}

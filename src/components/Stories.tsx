@@ -11,7 +11,7 @@ type Props = {
 
 export function Stories({ data }: Props) {
   return (
-    <>
+    <div className="flex flex-col flex-1 gap-4">
       {data
         .filter((story) => !isList(story.substyle))
         .map((story) => {
@@ -33,6 +33,6 @@ export function Stories({ data }: Props) {
             </List>
           )
         })}
-    </>
+    </div>
   )
 }
