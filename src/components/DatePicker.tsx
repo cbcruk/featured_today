@@ -1,7 +1,7 @@
 import { DayPicker, type PropsBase, type PropsSingle } from 'react-day-picker'
 import { Popover } from '@base-ui-components/react/popover'
 import { ko } from 'react-day-picker/locale'
-import { FIRST_DATE, LAST_DATE } from 'src/constants'
+import { FIRST_DATE, LAST_DATE } from '@/constants'
 
 type Props = PropsBase & PropsSingle
 

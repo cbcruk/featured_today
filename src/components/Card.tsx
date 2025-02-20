@@ -2,11 +2,11 @@ import chroma from 'chroma-js'
 import clsx from 'clsx'
 import Box from './Box'
 import styles from './Card.module.css'
-import { getThumbnail } from '@lib/image'
-import type { StoryData } from '@lib/collection'
+import { GetStoriesParamsReturn } from '@/lib/query'
+import { getThumbnail } from '@/lib/image'
 
 type Props = {
-  data: StoryData
+  data: GetStoriesParamsReturn[number]
 }
 
 function getLuminance(artwork: Props['data']['artwork']) {

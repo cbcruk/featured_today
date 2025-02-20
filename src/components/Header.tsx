@@ -1,7 +1,5 @@
 import type { ComponentProps, PropsWithChildren } from 'react'
-import { navigate } from 'astro:transitions/client'
 import { DatePicker as DatePickerPrimitive } from './DatePicker'
-import dayjs from 'dayjs'
 
 export function Header({ children }: PropsWithChildren) {
   return (
@@ -26,11 +24,6 @@ function DatePicker(props: Pick<DatePicker, 'defaultMonth'>) {
       mode="single"
       defaultMonth={props.defaultMonth}
       selected={props.defaultMonth}
-      onSelect={(value) => {
-        const date = dayjs(value).format('YYYY-MM-DD')
-
-        navigate(`/featured/${date}/`)
-      }}
     />
   )
 }

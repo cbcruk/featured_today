@@ -1,9 +1,9 @@
-import type { StoryData } from '@lib/collection'
 import Box from './Box'
 import type { PropsWithChildren } from 'react'
+import { GetStoriesParamsReturn } from '@/lib/query'
 
 type Props = {
-  data: StoryData
+  data: GetStoriesParamsReturn[number]
 }
 
 function List({ data, children }: PropsWithChildren<Props>) {

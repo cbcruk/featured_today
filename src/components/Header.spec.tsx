@@ -1,6 +1,6 @@
-import { render } from '@test/utils'
 import { describe, expect, it } from 'vitest'
 import { Header } from './Header'
+import { render } from '@/test/utils'
 
 describe('Header', () => {
   it('render', () => {

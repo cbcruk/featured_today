@@ -1,10 +1,10 @@
-import { getThumbnail } from '@lib/image'
-import { normalize } from '@lib/text'
+import { getThumbnail } from '@/lib/image'
+import { GetStoriesParamsReturn } from '@/lib/query'
+import { normalize } from '@/lib/text'
 import Box from './Box'
-import type { StoryData } from '@lib/collection'
 
 type Props = {
-  data: StoryData
+  data: GetStoriesParamsReturn[number]
 }
 
 function Media({ data }: Props) {

@@ -2,11 +2,11 @@ import Card from './Card'
 import Media from './Media'
 import { isList } from './Stories.helpers'
 import List from './List'
-import type { StoriesData } from '@lib/collection'
 import Grid from './Grid'
+import { GetStoriesParamsReturn } from '@/lib/query'
 
 type Props = {
-  data: StoriesData
+  data: GetStoriesParamsReturn
 }
 
 export function Stories({ data }: Props) {

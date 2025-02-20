@@ -1,10 +1,10 @@
 import clsx from 'clsx'
-import { getThumbnail } from '@lib/image'
 import styles from './Grid.module.css'
-import type { StoryData } from '@lib/collection'
+import { GetStoriesParamsReturn } from '@/lib/query'
+import { getThumbnail } from '@/lib/image'
 
 type Props = {
-  data: StoryData
+  data: GetStoriesParamsReturn[number]
 }
 
 function Grid({ data }: Props) {
