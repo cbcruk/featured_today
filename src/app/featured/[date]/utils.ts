@@ -1,5 +1,5 @@
 import { getDisplayFormat } from '@/lib/date'
-import { FeaturedDateParams } from './featured/[date]/types'
+import { FeaturedDateParams } from './types'
 import { LAST_DATE } from '@/constants'
 
 export function getDateData(date: FeaturedDateParams['date']) {
