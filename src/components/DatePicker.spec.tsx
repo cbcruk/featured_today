@@ -1,12 +1,14 @@
-import { fireEvent, getByTestId, render } from '@test/utils'
-import { describe, expect, it, vitest } from 'vitest'
+import { fireEvent, render } from '@/test/utils'
+import { describe, expect, it, vi } from 'vitest'
 import { DatePicker } from './DatePicker'
 
 describe('DatePicker', () => {
   it('render', () => {
-    const mock = vitest.fn()
+    const mock = vi.fn()
 
-    const { container, getByTestId } = render(<DatePicker onChange={mock} />)
+    const { container, getByTestId } = render(
+      <DatePicker mode="single" onMonthChange={mock} />
+    )
 
     expect(container).toMatchInlineSnapshot(`
       <div>

@@ -1,10 +1,8 @@
-import type { AstroGlobal } from 'astro'
+import { FeaturedDateParams } from '@/app/featured/[date]/types'
 import { db, schemas, type SelectStory } from './db'
 import { eq } from 'drizzle-orm'
 
-type Params = AstroGlobal['params']
-
-export async function getDateId(date: Params[string]) {
+export async function getDateId(date: FeaturedDateParams['date']) {
   if (!date) {
     return null
   }
@@ -43,6 +41,8 @@ export async function getApps(storyId: StoryId) {
 }
 
 type GetStoriesParams = Awaited<ReturnType<typeof getDateId>>
+
+export type GetStoriesParamsReturn = Awaited<ReturnType<typeof getStories>>
 
 export async function getStories(dateId: GetStoriesParams) {
   if (!dateId) {
