@@ -1,6 +1,6 @@
 import { FeaturedDateParams } from '@/app/featured/[date]/types'
 import { db, schemas, type SelectStory } from './db'
-import { eq } from 'drizzle-orm'
+import { eq, sql } from 'drizzle-orm'
 
 export async function getDateId(date: FeaturedDateParams['date']) {
   if (!date) {
@@ -18,6 +18,21 @@ export async function getDateId(date: FeaturedDateParams['date']) {
   }
 
   return row.id
+}
+
+export async function getRandomDate() {
+  const rows = await db
+    .select()
+    .from(schemas.dates)
+    .orderBy(sql`RANDOM()`)
+    .limit(1)
+  const row = rows.at(0)
+
+  if (!row) {
+    return null
+  }
+
+  return row
 }
 
 type StoryId = SelectStory['id']
