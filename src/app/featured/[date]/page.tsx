@@ -5,6 +5,7 @@ import { Body } from '@/components/Body'
 import { Header } from '@/components/Header'
 import { getDateData } from './utils'
 import { Metadata } from 'next/types'
+import { DateNav } from '@/components/DateNav'
 
 type PageProps = {
   params: Promise<FeaturedDateParams>
@@ -35,6 +36,7 @@ async function Page({ params }: PageProps) {
       </Header>
       <Body>
         <Stories data={stories} />
+        <DateNav date={defaultDate} />
       </Body>
     </>
   )

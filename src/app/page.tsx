@@ -3,6 +3,7 @@ import { getRandomDate, getStories } from '@/lib/query'
 import { Body } from '@/components/Body'
 import { Header } from '@/components/Header'
 import { getDateData } from './featured/[date]/utils'
+import { DateNav } from '@/components/DateNav'
 
 async function Page() {
   const random = await getRandomDate()
@@ -22,6 +23,7 @@ async function Page() {
       </Header>
       <Body>
         <Stories data={stories} />
+        <DateNav date={defaultDate} />
       </Body>
     </>
   )
